@@ -109,7 +109,7 @@ func (c *BackendClient) Query(ctx context.Context, qm *models.GlpiQueryModel) (*
 	if err != nil {
 		return nil, fmt.Errorf("http request to python backend: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -164,7 +164,7 @@ func (c *BackendClient) Health(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("python backend unreachable: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		b, _ := io.ReadAll(resp.Body)
