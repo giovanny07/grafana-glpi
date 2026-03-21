@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "GLPI",
+  "id": "imagunet-glpi-datasource",
+  "metrics": true,
+  "backend": true,
+  "executable": "gpx_imagunet_glpi_datasource",
+  "alerting": true,
+  "annotations": true,
+  "info": {
+    "description": "GLPI datasource for Grafana — tickets, SLA, assets and ITIL metrics",
+    "author": {
+      "name": "Imagunet",
+      "url": "https://imagunet.com"
+    },
+    "keywords": ["datasource", "glpi", "itsm", "tickets", "sla", "itil", "assets"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      { "name": "GitHub", "url": "https://github.com/giovanny07/grafana-glpi" },
+      { "name": "python-glpi-utils", "url": "https://github.com/giovanny07/python-glpi-utils" }
+    ],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=10.0.0",
+    "plugins": []
+  }
+}

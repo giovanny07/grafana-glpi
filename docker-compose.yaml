@@ -1,0 +1,18 @@
+services:
+  grafana:
+    extends:
+      file: .config/docker-compose-base.yaml
+      service: grafana
+    depends_on:
+      - glpi-backend
+    environment:
+      GLPI_BACKEND_URL: http://glpi-backend:8765
+
+  glpi-backend:
+    build:
+      context: ./backend-py
+      dockerfile: Dockerfile
+    container_name: glpi-grafana-backend
+    ports:
+      - "8765:8765"
+    restart: unless-stopped
