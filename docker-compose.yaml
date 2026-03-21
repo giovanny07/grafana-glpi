@@ -7,7 +7,7 @@ services:
       - glpi-backend
     environment:
       GLPI_BACKEND_URL: http://glpi-backend:8765
-
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: imagunet-glpi-datasource
   glpi-backend:
     build:
       context: ./backend-py
@@ -16,3 +16,5 @@ services:
     ports:
       - "8765:8765"
     restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1

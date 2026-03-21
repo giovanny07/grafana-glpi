@@ -1,28 +1,48 @@
 import { test, expect } from '@grafana/plugin-e2e';
 
-test('smoke: should render query editor', async ({ panelEditPage, readProvisionedDataSource }) => {
-  const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
-  await panelEditPage.datasource.set(ds.name);
-  await expect(panelEditPage.getQueryEditorRow('A').getByRole('textbox', { name: 'Query Text' })).toBeVisible();
-});
-
-test('should trigger new query when Constant field is changed', async ({
+test('smoke: should render GLPI query editor', async ({
   panelEditPage,
   readProvisionedDataSource,
 }) => {
   const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
   await panelEditPage.datasource.set(ds.name);
-  await panelEditPage.getQueryEditorRow('A').getByRole('textbox', { name: 'Query Text' }).fill('test query');
-  const queryReq = panelEditPage.waitForQueryDataRequest();
-  await panelEditPage.getQueryEditorRow('A').getByRole('spinbutton').fill('10');
-  await expect(await queryReq).toBeTruthy();
+  await expect(
+    panelEditPage.getQueryEditorRow('A').getByRole('combobox', { name: 'Query Type' })
+  ).toBeVisible();
 });
 
-test('data query should return values 10 and 20', async ({ panelEditPage, readProvisionedDataSource }) => {
+test('should show filters when query type is ticket_summary', async ({
+  panelEditPage,
+  readProvisionedDataSource,
+}) => {
   const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
   await panelEditPage.datasource.set(ds.name);
-  await panelEditPage.getQueryEditorRow('A').getByRole('textbox', { name: 'Query Text' }).fill('test query');
-  await panelEditPage.setVisualization('Table');
-  await expect(panelEditPage.refreshPanel()).toBeOK();
-  await expect(panelEditPage.panel.data).toContainText(['10', '20']);
+  const row = panelEditPage.getQueryEditorRow('A');
+  await row.getByRole('combobox', { name: 'Query Type' }).click();
+  await row.getByText('Ticket Summary').click();
+  await expect(row.getByLabel('Entity ID')).toBeVisible();
+});
+
+test('should show trend options when query type is ticket_trend', async ({
+  panelEditPage,
+  readProvisionedDataSource,
+}) => {
+  const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
+  await panelEditPage.datasource.set(ds.name);
+  const row = panelEditPage.getQueryEditorRow('A');
+  await row.getByRole('combobox', { name: 'Query Type' }).click();
+  await row.getByText('Ticket Trend').click();
+  await expect(row.getByLabel('Interval')).toBeVisible();
+});
+
+test('should show SLA options when query type is sla_compliance', async ({
+  panelEditPage,
+  readProvisionedDataSource,
+}) => {
+  const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
+  await panelEditPage.datasource.set(ds.name);
+  const row = panelEditPage.getQueryEditorRow('A');
+  await row.getByRole('combobox', { name: 'Query Type' }).click();
+  await row.getByText('SLA Compliance').click();
+  await expect(row.getByLabel('SLA ID')).toBeVisible();
 });

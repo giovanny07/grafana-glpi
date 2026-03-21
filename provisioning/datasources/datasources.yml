@@ -1,14 +1,16 @@
 apiVersion: 1
-
 datasources:
-  - name: 'imagunet-glpi-datasource'
-    type: 'imagunet-imagunetglpi-datasource'
+  - name: imagunet-glpi-datasource
+    type: imagunet-glpi-datasource
     access: proxy
-    isDefault: false
+    isDefault: true
     orgId: 1
     version: 1
     editable: true
     jsonData:
-      path: '/resources'
+      glpiUrl: 'http://glpi-backend:8765'
+      defaultEntityId: ''
+      verifySSL: false
+      backendUrl: 'http://glpi-backend:8765'
     secureJsonData:
-      apiKey: 'api-key'
+      userToken: 'test-token'
